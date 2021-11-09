@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vk</title>
+</head>
+<body>
+    <a href="/main">На главную</a>
+
+    <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
+        <label for="text"> </label>
+        <input id="text" type="text" th:field="*{text}" placeholder="Введите сообщение">
+
+        <label for="tag"> </label>
+        <input id="tag" type="text" th:field="*{tag}" placeholder="Тэг">
+
+        <button type="submit">Добавить</button>
+
+        <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
+        <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
+        <div th:if="${info != null}" th:text="${info}">info</div>
+    </form>
+    <hr/>
+
+    <p><b>Поиск</b></p>
+    <form method="post" action="/filter">
+        <input type="text" name="filter" placeholder="Найти">
+        <button type="submit">Найти</button>
+    </form>
+    <hr/>
+
+    <p th:if="${!filter}">Список сообщений: </p>
+    <p th:if="${filter}">Результат поиска: </p>
+
+    <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
+
+    <div th:each="message : ${messagesList}">
+        <b th:text="${message.id}"/>
+        <p th:text="${message.text}"/>
+        <i th:text="${message.tag}"/>
+
+        <form method="post" action="/delete" th:action="@{/delete/{id}(id =${message.id})}">
+            <button type="submit">Удалить</button>
+        </form>
+        <hr/>
+    </div>
+
+</body>
+</html>
