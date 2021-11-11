@@ -104,7 +104,7 @@ public class ServingWebContentMainController {
             messages = messageRepository.findByTagContaining(filter);
 
         model.put("messagesList", messages);
-       // model.put("messageModel", new MessageModel("", ""));
+        //model.put("messageModel", new MessageModel("", ""));
         model.put("filter", true);
         return MAIN_PATH;
     }
