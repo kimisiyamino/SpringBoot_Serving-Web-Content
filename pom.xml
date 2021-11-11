@@ -14,7 +14,7 @@
 	<artifactId>serving-web-content</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<name>serving-web-content</name>
+	<username>serving-web-content</username>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -49,6 +49,17 @@
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.3.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 
 

@@ -1,4 +1,4 @@
-package com.eleonoralion.servingwebcontent.models;
+package com.eleonoralion.servingwebcontent.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +14,14 @@ public class MessageModel {
     private Long id;
 
     @NotBlank(message = "Поле Text пустое!")
-    @Size(min = 4, max = 10, message = "Длинна поля Text длжна быть от 4 до 10 символов")
+    @Size(min = 4, max = 200, message = "Длинна поля Text должна быть от 4 до 200 символов")
     private String text;
 
     @NotBlank(message = "Поле Tag пустое!")
-    @Size(min = 4, max = 10, message = "Длинна поля Tag длжна быть от 4 до 10 символов")
+    @Size(min = 1, max = 100, message = "Длинна поля Tag должна быть от 1 до 100 символов")
     private String tag;
+
+    private String author;
 
     public MessageModel() {
     }
@@ -27,6 +29,20 @@ public class MessageModel {
     public MessageModel(String text, String tag) {
         this.text = text;
         this.tag = tag;
+    }
+
+    public MessageModel(String text, String tag, String author) {
+        this.text = text;
+        this.tag = tag;
+        this.author = author;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setText(String text) {

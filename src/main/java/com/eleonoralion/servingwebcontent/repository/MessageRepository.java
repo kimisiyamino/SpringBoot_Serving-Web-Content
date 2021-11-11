@@ -1,6 +1,6 @@
 package com.eleonoralion.servingwebcontent.repository;
 
-import com.eleonoralion.servingwebcontent.models.MessageModel;
+import com.eleonoralion.servingwebcontent.entity.MessageModel;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
