@@ -42,9 +42,17 @@ public class ServingWebContentMainController {
 
 
     @GetMapping(MAIN_PATH)
-    public String main(Map<String, Object> model, MessageModel messageModel) {
-        model.put("messagesList", messageRepository.findAllByOrderById());
-        model.put("filter", false);
+    public String main(@RequestParam(name = "filter", required = false) String filter, Map<String, Object> model, MessageModel messageModel) {
+
+        if(filter == null || filter.isEmpty()) {
+            model.put("messagesList", messageRepository.findAllByOrderById());
+            model.put("filter", false);
+        } else {
+            model.put("messagesList", messageRepository.findByTagContainingIgnoreCase(filter));
+            model.put("filter", true);
+        }
+
+        model.put("filterValue", filter);
 
         return MAIN_PATH;
     }
@@ -68,19 +76,5 @@ public class ServingWebContentMainController {
     public String deleteMessage(@PathVariable Long id) {
         messageRepository.findById(id).ifPresent(messageRepository::delete);
         return "redirect:" + MAIN_PATH + "?delete";
-    }
-
-
-    @PostMapping("/filter")
-    public String filterMessage(@RequestParam String filter, Map<String, Object> model, MessageModel messageModel){
-
-        List<MessageModel> messages = new ArrayList<>();
-
-        if(!filter.isEmpty())
-            messages = messageRepository.findByTagContainingIgnoreCase(filter);
-
-        model.put("messagesList", messages);
-        model.put("filter", true);
-        return MAIN_PATH;
     }
 }

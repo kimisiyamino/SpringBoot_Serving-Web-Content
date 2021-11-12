@@ -34,8 +34,8 @@
     <hr/>
 
     <p><b>Поиск</b></p>
-    <form method="post" action="/filter">
-        <input type="text" name="filter" placeholder="Найти">
+    <form method="get" action="/main">
+        <input type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
         <button type="submit">Найти</button>
     </form>
     <hr/>
