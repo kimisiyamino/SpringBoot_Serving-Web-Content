@@ -49,7 +49,7 @@
         <p>ID: <b th:text="${message.id}"/> </p>
         <p th:text="${message.text}"/>
         <i th:text="${message.tag}"/>
-        <p>author: <b th:text="${message.author}"/> </p>
+        <p>author: <b th:text="${message.username}"/> <i th:text="${message.dateTime}"/>  </p>
 
         <form method="post" action="/delete" th:action="@{/delete/{id}(id =${message.id})}">
             <button type="submit">Удалить</button>

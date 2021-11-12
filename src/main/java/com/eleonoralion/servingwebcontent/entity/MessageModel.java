@@ -1,12 +1,14 @@
 package com.eleonoralion.servingwebcontent.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
+@Table(name = "message_model")
 public class MessageModel {
 
     @Id
@@ -15,13 +17,21 @@ public class MessageModel {
 
     @NotBlank(message = "Поле Text пустое!")
     @Size(min = 4, max = 200, message = "Длинна поля Text должна быть от 4 до 200 символов")
+    @Column
     private String text;
 
     @NotBlank(message = "Поле Tag пустое!")
     @Size(min = 1, max = 100, message = "Длинна поля Tag должна быть от 1 до 100 символов")
+    @Column
     private String tag;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User author;
+
+    @Column
+    @DateTimeFormat(pattern="HH:mm:ss dd-MM-yyyy")
+    private LocalDateTime dateTime;
 
     public MessageModel() {
     }
@@ -31,17 +41,30 @@ public class MessageModel {
         this.tag = tag;
     }
 
-    public MessageModel(String text, String tag, String author) {
+    public MessageModel(String text, String tag, User author, LocalDateTime dateTime) {
         this.text = text;
         this.tag = tag;
         this.author = author;
+        this.dateTime = dateTime;
     }
 
-    public String getAuthor() {
+    public String getUsername(){
+        return author.getUsername();
+    }
+
+    public String getDateTime() {
+        return dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy"));
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public User getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(User author) {
         this.author = author;
     }
 
