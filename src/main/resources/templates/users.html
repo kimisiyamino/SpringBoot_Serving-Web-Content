@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>users</title>
+    </head>
+    <body>
+        <div th:if="${userList.isEmpty()}">Пользователи не найдены</div>
+
+        <table>
+            <tr>
+                <td>id</td>
+                <td>username</td>
+                <td>password</td>
+                <td>active</td>
+                <td>registrationDate</td>
+                <td>roles</td>
+                <td>actions</td>
+            </tr>
+            <tr th:each="user : ${userList}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.password}"></td>
+                <td th:text="${user.active}"></td>
+                <td th:text="${user.registrationDate}"></td>
+                <td th:each="role : ${user.roles}">
+                    <span th:text="${role.name()}"></span>
+                </td>
+                <td>
+                    <form method="get" th:action="@{/users/edit/{user}(user = ${user.id})}">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form method="post" th:action="@{/users/delete/{id}(id = ${user.id})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+
+        </table>
+
+        <a href="/main">На главную</a>
+    </body>
+</html>

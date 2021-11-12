@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Registration</title>
-</head>
-<body>
-    <h1>Registration</h1>
+    <head>
+        <meta charset="UTF-8">
+        <title>Registration</title>
+    </head>
+    <body>
+        <h1>Registration</h1>
 
-    <div th:if="${message != null}">
-       <div th:text="${message}"/>
-    </div>
+        <div th:if="${message != null}">
+           <div th:text="${message}"/>
+        </div>
 
-    <form th:action="@{/registration}" th:method="post" th:object="${user}">
-        <div><label> User Name : <input type="text" name="username" th:field="*{username}"/> </label></div>
-        <div><label> Password: <input type="password" name="password" th:field="*{password}"/> </label></div>
-        <div><input type="submit" value="reg"/></div>
+        <form th:action="@{/registration}" th:method="post" th:object="${user}">
+            <div><label> User Name : <input type="text" name="username" th:field="*{username}"/> </label></div>
+            <div><label> Password: <input type="password" name="password" th:field="*{password}"/> </label></div>
+            <div><input type="submit" value="reg"/></div>
 
-        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">text error</div>
-        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">tag error</div>
-    </form>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">text error</div>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">tag error</div>
+        </form>
 
-    <a href="/login">login</a>
-    <a href="/">start</a>
+        <a href="/login">login</a>
+        <a href="/">start</a>
 
-</body>
+    </body>
 </html>

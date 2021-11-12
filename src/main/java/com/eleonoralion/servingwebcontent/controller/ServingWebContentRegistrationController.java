@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 
@@ -40,6 +41,7 @@ public class ServingWebContentRegistrationController {
         }
 
         user.setActive(true);
+        user.setRegistrationDate(LocalDateTime.now());
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
         return "success";

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>edit user</title>
+    </head>
+    <body>
+        <form th:method="post" th:action="@{/edit}" th:object="${user}">
+            <input id="id" type="text" th:field="*{id}">
+            <input id="username" type="text" th:field="*{username}">
+            <input id="password" type="text" th:field="*{password}">
+            <input id="active" type="checkbox" th:field="*{active}">
+            <input id="registrationDate" type="datetime-local" th:field="*{registrationDate}">
+            <button type="submit">SAVE</button>
+        </form>
+        <a href="/users">Назад</a>
+    </body>
+</html>

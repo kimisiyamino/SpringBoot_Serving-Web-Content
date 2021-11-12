@@ -1,12 +1,12 @@
 package com.eleonoralion.servingwebcontent.controller;
 
 import com.eleonoralion.servingwebcontent.entity.MessageModel;
+import com.eleonoralion.servingwebcontent.entity.Role;
 import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +42,7 @@ public class ServingWebContentMainController {
 
 
     @GetMapping(MAIN_PATH)
-    public String main(@RequestParam(name = "filter", required = false) String filter, Map<String, Object> model, MessageModel messageModel) {
+    public String main(@AuthenticationPrincipal User user, @RequestParam(name = "filter", required = false) String filter, Map<String, Object> model, MessageModel messageModel) {
 
         if(filter == null || filter.isEmpty()) {
             model.put("messagesList", messageRepository.findAllByOrderById());
@@ -51,6 +51,9 @@ public class ServingWebContentMainController {
             model.put("messagesList", messageRepository.findByTagContainingIgnoreCase(filter));
             model.put("filter", true);
         }
+
+        if (user.getRoles().contains(Role.ADMIN))
+            model.put("admin", true);
 
         model.put("filterValue", filter);
 
@@ -74,7 +77,7 @@ public class ServingWebContentMainController {
 
     @PostMapping("/delete/{id}")
     public String deleteMessage(@PathVariable Long id) {
-        messageRepository.findById(id).ifPresent(messageRepository::delete);
+        messageRepository.deleteById(id);
         return "redirect:" + MAIN_PATH + "?delete";
     }
 }

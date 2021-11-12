@@ -1,61 +1,67 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>vk</title>
-</head>
-<body>
-    <div>
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
-    </div>
-    <a href="/main">На главную</a>
-
-    <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
-        <label for="text"> </label>
-        <input id="text" type="text" th:field="*{text}" placeholder="Введите сообщение">
-
-        <label for="tag"> </label>
-        <input id="tag" type="text" th:field="*{tag}" placeholder="Тэг">
-
-        <button type="submit">Добавить</button>
-
-        <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
-        <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
-        <div th:if="${param.add}">
-            Сообщение успешно добавлено
+    <head>
+        <meta charset="UTF-8">
+        <title>vk</title>
+    </head>
+    <body>
+        <div th:if="${admin}">
+            <a href="/users">Users</a>
         </div>
-        <div th:if="${param.delete}">
-            Сообщение успешно удалено
+
+        <div>
+            <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Sign Out"/>
+            </form>
         </div>
-    </form>
-    <hr/>
+        <a href="/main">На главную</a>
 
-    <p><b>Поиск</b></p>
-    <form method="get" action="/main">
-        <input type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
-        <button type="submit">Найти</button>
-    </form>
-    <hr/>
+        <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
+            <label for="text"> </label>
+            <input id="text" type="text" th:field="*{text}" placeholder="Введите сообщение">
 
-    <p th:if="${!filter}">Список сообщений: </p>
-    <p th:if="${filter}">Результат поиска: </p>
+            <label for="tag"> </label>
+            <input id="tag" type="text" th:field="*{tag}" placeholder="Тэг">
 
-    <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
+            <button type="submit">Добавить</button>
 
-    <div th:each="message : ${messagesList}">
-        <p>ID: <b th:text="${message.id}"/> </p>
-        <p th:text="${message.text}"/>
-        <i th:text="${message.tag}"/>
-        <p>author: <b th:text="${message.username}"/> <i th:text="${message.dateTime}"/>  </p>
-
-        <form method="post" action="/delete" th:action="@{/delete/{id}(id =${message.id})}">
-            <button type="submit">Удалить</button>
+            <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
+            <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
+            <div th:if="${param.add}">
+                Сообщение успешно добавлено
+            </div>
+            <div th:if="${param.delete}">
+                Сообщение успешно удалено
+            </div>
         </form>
         <hr/>
-    </div>
 
-</body>
+        <p><b>Поиск</b></p>
+        <form method="get" action="/main">
+            <input type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
+            <button type="submit">Найти</button>
+        </form>
+        <hr/>
+
+        <p th:if="${!filter}">Список сообщений: </p>
+        <p th:if="${filter}">Результат поиска: </p>
+
+        <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
+
+        <div th:each="message : ${messagesList}">
+            <p>ID: <b th:text="${message.id}"/> </p>
+            <p th:text="${message.text}"/>
+            <i th:text="${message.tag}"/>
+            <p>author: <b th:text="${message.username}"/> <i th:text="${message.dateTime}"/>  </p>
+
+            <div th:if="${admin}">
+                <form method="post" action="/delete" th:action="@{/delete/{id}(id =${message.id})}">
+                    <button type="submit">Удалить</button>
+                </form>
+            </div>
+            <hr/>
+        </div>
+
+    </body>
 </html>
