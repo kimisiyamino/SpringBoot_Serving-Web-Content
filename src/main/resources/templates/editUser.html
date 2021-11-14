@@ -1,18 +1,77 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="UTF-8">
-        <title>edit user</title>
+        <title>User editor</title>
     </head>
     <body>
-        <form th:method="post" th:action="@{/edit}" th:object="${user}">
-            <input id="id" type="text" th:field="*{id}">
-            <input id="username" type="text" th:field="*{username}">
-            <input id="password" type="text" th:field="*{password}">
-            <input id="active" type="checkbox" th:field="*{active}">
-            <input id="registrationDate" type="datetime-local" th:field="*{registrationDate}">
+        <h1><u>User editor:</u></h1>
+        <h2><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
+        <form th:method="post" th:action="@{/user/edit}" th:object="${user}">
+
+            <label for="active">
+                <input id="active" name="active" type="checkbox" th:checked="*{active}"/>
+                <i>Active</i>
+            </label>
+
+            <hr>
+            <br>
+            <table>
+                <tr>
+                    <td>
+                        <b>ID:</b>
+                    </td>
+                    <td>
+                        <label for="id">
+                            <input id="id" type="text" th:field="*{id}"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Username:</b>
+                    </td>
+                    <td>
+                        <label for="username">
+                            <input id="username" type="text" th:field="*{username}"/>
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Password:</b>
+                    </td>
+                    <td>
+                        <label for="password">
+                            <input id="password" type="text" th:field="*{password}"/>
+                        </label>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <hr>
+
+            <h3> Roles: </h3>
+            <div th:each="role : ${roles}">
+                <label for="role">
+                    <input id="role" th:name="${role}" type="checkbox" th:checked="${#sets.contains(user.roles, role)}"/>
+                </label>
+                <span th:text="${role}"></span>
+            </div>
+
+            <hr>
+
+            <label for="registrationDate"> Registration Date:
+                <input id="registrationDate" type="datetime-local" name="registrationDate" th:value="*{registrationDate}"/>
+            </label>
+            <br>
+            <br>
             <button type="submit">SAVE</button>
         </form>
-        <a href="/users">Назад</a>
+
+        <br>
+        <br>
+        <br>
+        <a href="/user">Назад</a>
     </body>
 </html>

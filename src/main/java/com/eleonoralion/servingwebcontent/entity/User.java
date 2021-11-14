@@ -6,10 +6,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,15 +31,33 @@ public class User implements UserDetails {
     @Size(min = 4, max = 16, message = "Длинна пароля должна быть от 4 до 16 символов")
     private String password;
 
-    private boolean active;
+    @NotNull
+    private Boolean active;
 
-    @DateTimeFormat(pattern="HH:mm:ss dd-MM-yyyy")
+    @DateTimeFormat
     private LocalDateTime registrationDate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
+
+    public User() {
+        username="";
+        password="";
+        active = true;
+        registrationDate = LocalDateTime.MIN;
+        roles = new HashSet<>();
+    }
+
+    public User(Long id, String username, String password, boolean active, LocalDateTime registrationDate, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.active = active;
+        this.registrationDate = registrationDate;
+        this.roles = roles;
+    }
 
     @Override
     public boolean isAccountNonExpired() {
@@ -61,6 +82,10 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();
+    }
+
+    public String getFormatRegistrationDate() {
+        return registrationDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
     }
 
     public LocalDateTime getRegistrationDate() {
@@ -118,6 +143,7 @@ public class User implements UserDetails {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", active=" + active +
+                ", registrationDate=" + registrationDate +
                 ", roles=" + roles +
                 '}';
     }

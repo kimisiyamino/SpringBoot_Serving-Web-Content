@@ -70,14 +70,8 @@ public class ServingWebContentMainController {
         }
 
         messageModel.setAuthor(user);
-        messageModel.setDateTime(LocalDateTime.now());
+        messageModel.setDateTime(LocalDateTime.now().withNano(0));
         messageRepository.save(messageModel);
         return "redirect:" + MAIN_PATH + "?add";
-    }
-
-    @PostMapping("/delete/{id}")
-    public String deleteMessage(@PathVariable Long id) {
-        messageRepository.deleteById(id);
-        return "redirect:" + MAIN_PATH + "?delete";
     }
 }

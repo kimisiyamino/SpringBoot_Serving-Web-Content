@@ -22,22 +22,22 @@
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.password}"></td>
                 <td th:text="${user.active}"></td>
-                <td th:text="${user.registrationDate}"></td>
+                <td th:text="${user.getFormatRegistrationDate()}"></td>
                 <td th:each="role : ${user.roles}">
                     <span th:text="${role.name()}"></span>
                 </td>
                 <td>
-                    <form method="get" th:action="@{/users/edit/{user}(user = ${user.id})}">
+                    <form method="get" th:action="@{/user/edit/{user}(user = ${user.id})}">
                         <button type="submit">Edit</button>
                     </form>
-                    <form method="post" th:action="@{/users/delete/{id}(id = ${user.id})}">
+                    <form method="post" th:action="@{/user/delete/{id}(id = ${user.id})}">
                         <button type="submit">Удалить</button>
                     </form>
                 </td>
             </tr>
 
         </table>
-
+        <a onclick="javascript:history.back(); return false;">Назад</a>
         <a href="/main">На главную</a>
     </body>
 </html>

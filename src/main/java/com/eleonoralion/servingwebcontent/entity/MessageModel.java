@@ -52,8 +52,12 @@ public class MessageModel {
         return author.getUsername();
     }
 
-    public String getDateTime() {
+    public String getFormatDateTime() {
         return dateTime.format(DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy"));
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
@@ -86,5 +90,16 @@ public class MessageModel {
 
     public String getTag() {
         return tag;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageModel{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", tag='" + tag + '\'' +
+                ", author=" + author +
+                ", dateTime=" + dateTime +
+                '}';
     }
 }

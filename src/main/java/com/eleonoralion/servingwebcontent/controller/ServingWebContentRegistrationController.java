@@ -6,6 +6,7 @@ import com.eleonoralion.servingwebcontent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -41,7 +42,7 @@ public class ServingWebContentRegistrationController {
         }
 
         user.setActive(true);
-        user.setRegistrationDate(LocalDateTime.now());
+        user.setRegistrationDate(LocalDateTime.now().withNano(0));
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
         return "success";

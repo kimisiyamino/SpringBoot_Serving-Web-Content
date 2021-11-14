@@ -6,16 +6,16 @@
     </head>
     <body>
         <div th:if="${admin}">
-            <a href="/users">Users</a>
+            <a href="/user">Users</a>
         </div>
 
         <div>
-            <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+            <h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
             <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Sign Out"/>
+                <input type="submit" value="Выход"/>
             </form>
         </div>
-        <a href="/main">На главную</a>
+        <a href="/">На главную</a>
 
         <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
             <label for="text"> </label>
@@ -42,6 +42,7 @@
             <input type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
             <button type="submit">Найти</button>
         </form>
+        <a href="/main">Сбросить поиск</a>
         <hr/>
 
         <p th:if="${!filter}">Список сообщений: </p>
@@ -53,10 +54,15 @@
             <p>ID: <b th:text="${message.id}"/> </p>
             <p th:text="${message.text}"/>
             <i th:text="${message.tag}"/>
-            <p>author: <b th:text="${message.username}"/> <i th:text="${message.dateTime}"/>  </p>
+            <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
 
             <div th:if="${admin}">
-                <form method="post" action="/delete" th:action="@{/delete/{id}(id =${message.id})}">
+                <a th:href="@{/message/edit/{id}(id =${message.id})}">
+                    <button type="submit">Редактировать</button>
+                </a>
+            </div>
+            <div th:if="${admin}">
+                <form method="post" th:action="@{/message/delete/{id}(id =${message.id})}">
                     <button type="submit">Удалить</button>
                 </form>
             </div>
