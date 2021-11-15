@@ -1,0 +1,121 @@
+Официальный сайт Spring -> Guides 
+https://spring.io/guides
+
+
+	=== === === === === === === === === === === === === === === === === === === === === === === === 
+	
+	Первое приложениe SpringBoot
+https://spring.io/guides/gs/serving-web-content/
+	
+	@SpringBootApplication
+	SpringApplication.run(MyClassApplication.class, args);
+	
+	=== === === === === === === === === === === === === === === === === === === === === === === === 
+	
+	Подключение БД
+https://spring.io/guides/gs/accessing-data-mysql/
+	
+	JPA примеры
+https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
+
+=== === === === === === === === === === === === === === === === === === === === === === === === 
+
+	Секьюрити (Авторизация, логин)
+	https://spring.io/guides/gs/securing-web/
+	
+	Редирект залогинированных пользователей
+	https://www.baeldung.com/spring-security-redirect-logged-in
+	
+	
+	https://www.baeldung.com/csrf-thymeleaf-with-spring-security
+
+=== === === === === === === === === === === === === === === === === === === === === === === === 
+
+
+	a) Добавление "автора" сообщения
+
+		https://www.youtube.com/watch?v=PpoOoR55Ypw&list=PLU2ftbIeotGpAYRP9Iv2KLIwK36-o_qYk&index=6
+
+		1. Добавляем поле User в класс Message, getter, setter
+			1.1 @ManyToOne(fetch = FetchType.EAGER)
+			1.2 @JoinColumn(name = "user_id")
+		2. Подключаем интерфейс UserDetails к классу User
+			2.1 isEnabled() -> return isActive()
+			2.2 getAuthorities() -> return getRoles()
+		3. Подключаем интерфейс GrantedAuthority к enum Role
+			3.1 getAuthority() -> return name()
+		4. Добавляем package service, класс UserService implements UserDetailsService
+			4.1 @Autowired UserRepository (Внедряем зависимость)
+			4.2 loadUserByUserName() -> return userRepository.findByUsername()
+		5. WebSecurityConfig : 
+			5.1 @Autowired UserService (Внедряем зависимость)
+			5.2 configure(AuthenticationManagerBuilder auth) -> auth.userDetailService(userService) (заменяем с jdbc и DataSource)
+		6. MainController:
+			6.1 String add(@AuthenticationPrincipal User user) (Добавляем параметр User в метод add)
+		7. Реализовываем сохранение author в Message, редактируем view
+	
+	b) Добавление LocalDateTime сообщения
+	c) Смена способа получения Authentication на @AuthenticationPrincipal
+	d) Смена findAll() на findAllByOrderById()
+	
+=== === === === === === === === === === === === === === === === === === === === === === === === 
+
+	Меняем /filter на /main
+
+	https://www.youtube.com/watch?v=8MlXahJXLFg&list=PLU2ftbIeotGpAYRP9Iv2KLIwK36-o_qYk&index=7
+	
+	1. Переносим код из Post метода /filter в Get метод /main
+	2. Добавляем @RequestParam String filter
+	3. Добавляем в модель filter
+	4. Меняем в view в form метод на GET, action на /main, убираем csrf-token (если есть, только для post)
+	4.1 Добавляем в form, <input value = ${filter}
+	
+=== === === === === === === === === === === === === === === === === === === === === === === === 
+
+	1. Добавляем ADMIN в ROLE
+	2. Делаем страницу users
+	3. Делаем страницу editUsers
+	4. Добавляем UserController
+	4.1 помечаем UserController @PreAuthorize("hasAuthority('ADMIN')")
+	4.2 помечаем WebSecurityConfig @EnableGlobalMethodSecurity(prePostEnabled = true)
+	 - реализованы методы getUsers() editUser() deleteUser()
+	 Добавлена дата регистрации
+	 
+	 
+	Реализован метод saveUser() в UserController
+	class MessageController
+	editMessage
+	
+=== === === === === === === === === === === === === === === === === === === === === === === === 
+
+	Загрузка файлов
+
+	https://spring.io/guides/gs/uploading-files/
+	
+	1. Добавляем путь хранения файлов в application.properties
+		upload.path=/home/servingwebcontent/uploads
+		
+	2. <form method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Отправить</button>
+        </form>
+		
+	3.
+		
+		
+		Перехватывааем исключения:
+		
+		 protected void configure(HttpSecurity http)
+				.and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/error");
+		
+		
+		
+		@ControllerAdvice
+		
+		@ExceptionHandler(SizeLimitExceededException.class)
+		public String handleMultipartException(SizeLimitExceededException e, RedirectAttributes redirectAttributes) {
+			redirectAttributes.addFlashAttribute("message", "Большой размер файла!");
+			return "redirect:/admin/testpage";
+		}

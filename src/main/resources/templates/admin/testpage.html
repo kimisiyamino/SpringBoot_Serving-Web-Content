@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>test page</title>
+    </head>
+    <body>
+        <a href="/admin/main">admin menu</a>
+        <hr>
+        <br>
+        <h3>Upload files</h3>
+        <br>
+
+        <form th:action="@{/admin/testpage}" th:method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept="image/png, image/jpeg"/>
+            <button type="submit">Отправить</button>
+        </form>
+
+        <p>Файлы формата <b>png</b>,<b>jpeg</b></p>
+        <p>Максимальный объем <b>128 кб</b></p>
+        <div th:if="${message}">
+            <div th:text="${message}"></div>
+        </div>
+
+        <br>
+        <hr>
+            <div th:each="pic : ${pictures}">
+                <p th:text="${pic.getFileName()}"/>
+                <img th:src="@{/img/{file}(file = ${pic.fileName})}">
+
+                <form method="post" th:action="@{/admin/testpage/delete/{id}(id = ${pic.id})}">
+                    <button type="submit">Удалить</button>
+                </form>
+            </div>
+    </body>
+</html>

@@ -1,7 +1,6 @@
 package com.eleonoralion.servingwebcontent.controller;
 
 import com.eleonoralion.servingwebcontent.entity.MessageModel;
-import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/message")
+@RequestMapping("/admin/message")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class ServingWebContentMessageController {
 
@@ -22,6 +21,12 @@ public class ServingWebContentMessageController {
     @Autowired
     public ServingWebContentMessageController(MessageRepository messageRepository){
         this.messageRepository = messageRepository;
+    }
+
+    @GetMapping
+    public String getMessages(Map<String, Object> model){
+        model.put("messageList", messageRepository.findAllByOrderById());
+        return "admin/messages";
     }
 
     @PostMapping("/delete/{id}")
@@ -33,7 +38,7 @@ public class ServingWebContentMessageController {
     @GetMapping("/edit/{id}")
     public String getPage(@PathVariable("id") MessageModel messageModel, Model model){
         model.addAttribute("messageModel", messageModel);
-        return "editMessage";
+        return "admin/editMessage";
     }
 
     @PostMapping("/edit")

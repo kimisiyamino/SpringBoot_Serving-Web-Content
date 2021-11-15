@@ -14,14 +14,19 @@
         <form th:action="@{/registration}" th:method="post" th:object="${user}">
             <div><label> Логин : <input type="text" name="username" th:field="*{username}"/> </label></div>
             <div><label> Пароль: <input type="password" name="password" th:field="*{password}"/> </label></div>
+            <br>
             <div><input type="submit" value="Зарегестрироваться"/></div>
 
             <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">text error</div>
             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">tag error</div>
         </form>
 
+        <br>
+        <br>
         <a href="/login">Вход</a>
+        <br>
         <a href="/">Главная</a>
+        <br>
 
     </body>
 </html>
