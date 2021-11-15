@@ -1,10 +1,10 @@
-Официальный сайт Spring -> Guides 
+РћС„РёС†РёР°Р»СЊРЅС‹Р№ СЃР°Р№С‚ Spring -> Guides 
 https://spring.io/guides
 
 
 	=== === === === === === === === === === === === === === === === === === === === === === === === 
 	
-	Первое приложениe SpringBoot
+	РџРµСЂРІРѕРµ РїСЂРёР»РѕР¶РµРЅРёe SpringBoot
 https://spring.io/guides/gs/serving-web-content/
 	
 	@SpringBootApplication
@@ -12,18 +12,18 @@ https://spring.io/guides/gs/serving-web-content/
 	
 	=== === === === === === === === === === === === === === === === === === === === === === === === 
 	
-	Подключение БД
+	РџРѕРґРєР»СЋС‡РµРЅРёРµ Р‘Р”
 https://spring.io/guides/gs/accessing-data-mysql/
 	
-	JPA примеры
+	JPA РїСЂРёРјРµСЂС‹
 https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
 
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
-	Секьюрити (Авторизация, логин)
+	РЎРµРєСЊСЋСЂРёС‚Рё (РђРІС‚РѕСЂРёР·Р°С†РёСЏ, Р»РѕРіРёРЅ)
 	https://spring.io/guides/gs/securing-web/
 	
-	Редирект залогинированных пользователей
+	Р РµРґРёСЂРµРєС‚ Р·Р°Р»РѕРіРёРЅРёСЂРѕРІР°РЅРЅС‹С… РїРѕР»СЊР·РѕРІР°С‚РµР»РµР№
 	https://www.baeldung.com/spring-security-redirect-logged-in
 	
 	
@@ -32,78 +32,78 @@ https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.rep
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
 
-	a) Добавление "автора" сообщения
+	a) Р”РѕР±Р°РІР»РµРЅРёРµ "Р°РІС‚РѕСЂР°" СЃРѕРѕР±С‰РµРЅРёСЏ
 
 		https://www.youtube.com/watch?v=PpoOoR55Ypw&list=PLU2ftbIeotGpAYRP9Iv2KLIwK36-o_qYk&index=6
 
-		1. Добавляем поле User в класс Message, getter, setter
+		1. Р”РѕР±Р°РІР»СЏРµРј РїРѕР»Рµ User РІ РєР»Р°СЃСЃ Message, getter, setter
 			1.1 @ManyToOne(fetch = FetchType.EAGER)
 			1.2 @JoinColumn(name = "user_id")
-		2. Подключаем интерфейс UserDetails к классу User
+		2. РџРѕРґРєР»СЋС‡Р°РµРј РёРЅС‚РµСЂС„РµР№СЃ UserDetails Рє РєР»Р°СЃСЃСѓ User
 			2.1 isEnabled() -> return isActive()
 			2.2 getAuthorities() -> return getRoles()
-		3. Подключаем интерфейс GrantedAuthority к enum Role
+		3. РџРѕРґРєР»СЋС‡Р°РµРј РёРЅС‚РµСЂС„РµР№СЃ GrantedAuthority Рє enum Role
 			3.1 getAuthority() -> return name()
-		4. Добавляем package service, класс UserService implements UserDetailsService
-			4.1 @Autowired UserRepository (Внедряем зависимость)
+		4. Р”РѕР±Р°РІР»СЏРµРј package service, РєР»Р°СЃСЃ UserService implements UserDetailsService
+			4.1 @Autowired UserRepository (Р’РЅРµРґСЂСЏРµРј Р·Р°РІРёСЃРёРјРѕСЃС‚СЊ)
 			4.2 loadUserByUserName() -> return userRepository.findByUsername()
 		5. WebSecurityConfig : 
-			5.1 @Autowired UserService (Внедряем зависимость)
-			5.2 configure(AuthenticationManagerBuilder auth) -> auth.userDetailService(userService) (заменяем с jdbc и DataSource)
+			5.1 @Autowired UserService (Р’РЅРµРґСЂСЏРµРј Р·Р°РІРёСЃРёРјРѕСЃС‚СЊ)
+			5.2 configure(AuthenticationManagerBuilder auth) -> auth.userDetailService(userService) (Р·Р°РјРµРЅСЏРµРј СЃ jdbc Рё DataSource)
 		6. MainController:
-			6.1 String add(@AuthenticationPrincipal User user) (Добавляем параметр User в метод add)
-		7. Реализовываем сохранение author в Message, редактируем view
+			6.1 String add(@AuthenticationPrincipal User user) (Р”РѕР±Р°РІР»СЏРµРј РїР°СЂР°РјРµС‚СЂ User РІ РјРµС‚РѕРґ add)
+		7. Р РµР°Р»РёР·РѕРІС‹РІР°РµРј СЃРѕС…СЂР°РЅРµРЅРёРµ author РІ Message, СЂРµРґР°РєС‚РёСЂСѓРµРј view
 	
-	b) Добавление LocalDateTime сообщения
-	c) Смена способа получения Authentication на @AuthenticationPrincipal
-	d) Смена findAll() на findAllByOrderById()
+	b) Р”РѕР±Р°РІР»РµРЅРёРµ LocalDateTime СЃРѕРѕР±С‰РµРЅРёСЏ
+	c) РЎРјРµРЅР° СЃРїРѕСЃРѕР±Р° РїРѕР»СѓС‡РµРЅРёСЏ Authentication РЅР° @AuthenticationPrincipal
+	d) РЎРјРµРЅР° findAll() РЅР° findAllByOrderById()
 	
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
-	Меняем /filter на /main
+	РњРµРЅСЏРµРј /filter РЅР° /main
 
 	https://www.youtube.com/watch?v=8MlXahJXLFg&list=PLU2ftbIeotGpAYRP9Iv2KLIwK36-o_qYk&index=7
 	
-	1. Переносим код из Post метода /filter в Get метод /main
-	2. Добавляем @RequestParam String filter
-	3. Добавляем в модель filter
-	4. Меняем в view в form метод на GET, action на /main, убираем csrf-token (если есть, только для post)
-	4.1 Добавляем в form, <input value = ${filter}
+	1. РџРµСЂРµРЅРѕСЃРёРј РєРѕРґ РёР· Post РјРµС‚РѕРґР° /filter РІ Get РјРµС‚РѕРґ /main
+	2. Р”РѕР±Р°РІР»СЏРµРј @RequestParam String filter
+	3. Р”РѕР±Р°РІР»СЏРµРј РІ РјРѕРґРµР»СЊ filter
+	4. РњРµРЅСЏРµРј РІ view РІ form РјРµС‚РѕРґ РЅР° GET, action РЅР° /main, СѓР±РёСЂР°РµРј csrf-token (РµСЃР»Рё РµСЃС‚СЊ, С‚РѕР»СЊРєРѕ РґР»СЏ post)
+	4.1 Р”РѕР±Р°РІР»СЏРµРј РІ form, <input value = ${filter}
 	
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
-	1. Добавляем ADMIN в ROLE
-	2. Делаем страницу users
-	3. Делаем страницу editUsers
-	4. Добавляем UserController
-	4.1 помечаем UserController @PreAuthorize("hasAuthority('ADMIN')")
-	4.2 помечаем WebSecurityConfig @EnableGlobalMethodSecurity(prePostEnabled = true)
-	 - реализованы методы getUsers() editUser() deleteUser()
-	 Добавлена дата регистрации
+	1. Р”РѕР±Р°РІР»СЏРµРј ADMIN РІ ROLE
+	2. Р”РµР»Р°РµРј СЃС‚СЂР°РЅРёС†Сѓ users
+	3. Р”РµР»Р°РµРј СЃС‚СЂР°РЅРёС†Сѓ editUsers
+	4. Р”РѕР±Р°РІР»СЏРµРј UserController
+	4.1 РїРѕРјРµС‡Р°РµРј UserController @PreAuthorize("hasAuthority('ADMIN')")
+	4.2 РїРѕРјРµС‡Р°РµРј WebSecurityConfig @EnableGlobalMethodSecurity(prePostEnabled = true)
+	 - СЂРµР°Р»РёР·РѕРІР°РЅС‹ РјРµС‚РѕРґС‹ getUsers() editUser() deleteUser()
+	 Р”РѕР±Р°РІР»РµРЅР° РґР°С‚Р° СЂРµРіРёСЃС‚СЂР°С†РёРё
 	 
 	 
-	Реализован метод saveUser() в UserController
+	Р РµР°Р»РёР·РѕРІР°РЅ РјРµС‚РѕРґ saveUser() РІ UserController
 	class MessageController
 	editMessage
 	
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
-	Загрузка файлов
+	Р—Р°РіСЂСѓР·РєР° С„Р°Р№Р»РѕРІ
 
 	https://spring.io/guides/gs/uploading-files/
 	
-	1. Добавляем путь хранения файлов в application.properties
+	1. Р”РѕР±Р°РІР»СЏРµРј РїСѓС‚СЊ С…СЂР°РЅРµРЅРёСЏ С„Р°Р№Р»РѕРІ РІ application.properties
 		upload.path=/home/servingwebcontent/uploads
 		
 	2. <form method="post" enctype="multipart/form-data">
             <input type="file" name="file">
-            <button type="submit">Отправить</button>
+            <button type="submit">РћС‚РїСЂР°РІРёС‚СЊ</button>
         </form>
 		
 	3.
 		
 		
-		Перехватывааем исключения:
+		РџРµСЂРµС…РІР°С‚С‹РІР°Р°РµРј РёСЃРєР»СЋС‡РµРЅРёСЏ:
 		
 		 protected void configure(HttpSecurity http)
 				.and()
@@ -116,6 +116,6 @@ https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.rep
 		
 		@ExceptionHandler(SizeLimitExceededException.class)
 		public String handleMultipartException(SizeLimitExceededException e, RedirectAttributes redirectAttributes) {
-			redirectAttributes.addFlashAttribute("message", "Большой размер файла!");
+			redirectAttributes.addFlashAttribute("message", "Р‘РѕР»СЊС€РѕР№ СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°!");
 			return "redirect:/admin/testpage";
 		}
