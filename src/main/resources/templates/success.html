@@ -5,7 +5,9 @@
         <title>Success</title>
     </head>
     <body>
-        <div>Успешная регистрация!</div>
-        <a href="/login">GO LOGIN</a>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
+
+        <h1>Успешная регистрация!</h1>
+        <a class="link-success" href="/login"><b>GO LOGIN</b></a>
     </body>
 </html>

@@ -14,7 +14,7 @@
 	<artifactId>serving-web-content</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
-	<username>serving-web-content</username>
+	<name>serving-web-content</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -56,12 +56,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -78,6 +78,11 @@
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 	</dependencies>
 

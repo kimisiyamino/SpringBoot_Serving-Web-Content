@@ -4,6 +4,7 @@ import com.eleonoralion.servingwebcontent.entity.Role;
 import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -25,8 +26,8 @@ public class ServingWebContentRegistrationController {
     }
 
     @GetMapping("/registration")
-    public String getRegistrationPage(Map<String, Object> model, User user){
-        return "registration";
+    public String getRegistrationPage(@AuthenticationPrincipal User authUser, User user, Map<String, Object> model){
+        return authUser == null ? "registration" : "redirect:/main";
     }
 
     @PostMapping("/registration")

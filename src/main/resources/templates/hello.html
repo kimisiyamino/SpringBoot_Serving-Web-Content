@@ -5,10 +5,15 @@
         <title>Serving Web Content</title>
     </head>
     <body>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
 
-        <h1>Serving Web Content</h1>
-        <h2><b>Spring Boot</b> test app</h2>
-        <p>Hello, user</p>
-        <a href="/main">Main</a>
+        <div class="container">
+
+            <h1>Serving Web Content</h1>
+            <h2><b>Spring Boot</b> test app</h2>
+            <p>Hello, user</p>
+            <a href="/main">Main</a>
+
+        </div>
     </body>
 </html>

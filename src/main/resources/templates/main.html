@@ -2,72 +2,73 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
-        <title>vk</title>
+        <title>Main</title>
     </head>
     <body>
-        <div th:if="${admin}">
-            <a href="/admin/main">Admin Menu</a>
-        </div>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
 
-        <div>
-            <h1 th:inline="text">Привет [[${#httpServletRequest.remoteUser}]]!</h1>
-            <form th:action="@{/logout}" method="post">
-                <input type="submit" value="Выход"/>
+        <div th:replace="fragments/navigationPanel" :: navigationPanel></div>
+
+        <div class="container mt-5">
+
+            <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
+                <label for="text"> </label>
+                <input id="text" type="text" th:field="*{text}" placeholder="Введите сообщение">
+
+                <label for="tag"> </label>
+                <input id="tag" type="text" th:field="*{tag}" placeholder="Тэг">
+
+                <button type="submit">Добавить</button>
+
+                <div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
+                <div th:if="${param.add}">
+                    <b class="text-primary">Сообщение успешно добавлено</b>
+                </div>
+                <div th:if="${param.delete}">
+                    <b class="text-primary">Сообщение успешно удалено</b>
+                </div>
             </form>
-        </div>
-        <a href="/">На главную</a>
-
-        <form th:method="post" th:action="@{/main}" th:object="${messageModel}">
-            <label for="text"> </label>
-            <input id="text" type="text" th:field="*{text}" placeholder="Введите сообщение">
-
-            <label for="tag"> </label>
-            <input id="tag" type="text" th:field="*{tag}" placeholder="Тэг">
-
-            <button type="submit">Добавить</button>
-
-            <div th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
-            <div th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
-            <div th:if="${param.add}">
-                Сообщение успешно добавлено
-            </div>
-            <div th:if="${param.delete}">
-                Сообщение успешно удалено
-            </div>
-        </form>
-        <hr/>
-
-        <p><b>Поиск</b></p>
-        <form method="get" action="/main">
-            <input type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
-            <button type="submit">Найти</button>
-        </form>
-        <a href="/main">Сбросить поиск</a>
-        <hr/>
-
-        <p th:if="${!filter}">Список сообщений: </p>
-        <p th:if="${filter}">Результат поиска: </p>
-
-        <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
-
-        <div th:each="message : ${messagesList}">
-            <p>ID: <b th:text="${message.id}"/> </p>
-            <p th:text="${message.text}"/>
-            <i th:text="${message.tag}"/>
-            <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
-
-            <div th:if="${admin}">
-                <a th:href="@{/admin/message/edit/{id}(id =${message.id})}">
-                    <button type="submit">Редактировать</button>
-                </a>
-            </div>
-            <div th:if="${admin}">
-                <form method="post" th:action="@{/admin/message/delete/{id}(id =${message.id})}">
-                    <button type="submit">Удалить</button>
-                </form>
-            </div>
             <hr/>
-        </div>
 
+            <p><b>Поиск</b></p>
+            <nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <form class="d-flex" method="get" action="/main">
+                        <input class="form-control me-2" aria-label="Search" type="text" name="filter" th:value="${filterValue}" placeholder="Найти">
+                        <button class="btn btn-outline-success" type="submit">Найти</button>
+                    </form>
+                </div>
+                <div class="container-fluid">
+                    <a class="link-success" href="/main">Сбросить поиск</a>
+                </div>
+            </nav>
+
+            <hr/>
+
+            <p th:if="${!filter}">Список сообщений: </p>
+            <p th:if="${filter}">Результат поиска: </p>
+
+            <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
+
+            <div th:each="message : ${messagesList}">
+                <p>ID: <b th:text="${message.id}"/> </p>
+                <p th:text="${message.text}"/>
+                <i th:text="${message.tag}"/>
+                <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
+
+                <div th:if="${admin}">
+                    <a th:href="@{/admin/message/edit/{id}(id =${message.id})}">
+                        <button class="btn btn-warning" type="submit">Редактировать</button>
+                    </a>
+                </div>
+                <div th:if="${admin}">
+                    <form method="post" th:action="@{/admin/message/delete/{id}(id =${message.id})}">
+                        <button class="btn btn-danger" type="submit">Удалить</button>
+                    </form>
+                </div>
+                <hr/>
+            </div>
+        </div>
     </body>
 </html>

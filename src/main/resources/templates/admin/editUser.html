@@ -5,6 +5,8 @@
         <title>User editor</title>
     </head>
     <body>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
+
         <h1><u>User editor:</u></h1>
         <h2><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
         <form th:method="post" th:action="@{/admin/user/edit}" th:object="${user}">
