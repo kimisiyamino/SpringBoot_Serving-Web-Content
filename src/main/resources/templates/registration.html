@@ -11,7 +11,7 @@
             <h1>Registration</h1>
 
             <div th:if="${message != null}">
-               <div th:text="${message}"/>
+               <div class="text-danger" th:text="${message}"/>
             </div>
 
             <form th:action="@{/registration}" th:method="post" th:object="${user}">

@@ -7,16 +7,19 @@
     <body>
         <div th:replace="fragments/bootstrap :: bootstrap"></div>
 
-        <a href="/admin/user">Users</a>
-        <br>
-        <a href="/admin/message">Messages</a>
-        <br>
-        <a href="/admin/testpage">Test page</a>
-        <br>
-        <br>
-        <br>
-        <a href="/main">Main</a>
-        <br>
-        <a href="/">Start</a>
+        <div th:replace="fragments/navigationPanel" :: navigationPanel></div>
+        <div class="container">
+            <a href="/admin/user">Users</a>
+            <br>
+            <a href="/admin/message">Messages</a>
+            <br>
+            <a href="/admin/testpage">Test page</a>
+            <br>
+            <br>
+            <br>
+            <a href="/main">Main</a>
+            <br>
+            <a href="/">Start</a>
+        </div>
     </body>
 </html>

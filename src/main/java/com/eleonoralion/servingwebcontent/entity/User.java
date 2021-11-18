@@ -50,6 +50,14 @@ public class User implements UserDetails {
         roles = new HashSet<>();
     }
 
+    public User(String username) {
+        this.username = username;
+        password="";
+        active = true;
+        registrationDate = LocalDateTime.MIN;
+        roles = new HashSet<>();
+    }
+
     public User(Long id, String username, String password, boolean active, LocalDateTime registrationDate, Set<Role> roles) {
         this.id = id;
         this.username = username;
@@ -57,6 +65,10 @@ public class User implements UserDetails {
         this.active = active;
         this.registrationDate = registrationDate;
         this.roles = roles;
+    }
+
+    public boolean isAdmin(){
+        return roles.contains(Role.ADMIN);
     }
 
     @Override

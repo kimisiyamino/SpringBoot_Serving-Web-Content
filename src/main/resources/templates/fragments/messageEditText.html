@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="messageEditText">
+            <div th:if="${param.delete}">
+                <b class="text-primary">Сообщение успешно удалено</b>
+            </div>
+            <div th:if="${param.edit}">
+                <b class="text-primary">Сообщение успешно отредактировано</b>
+            </div>
+        </div>
+    </body>
+</html>

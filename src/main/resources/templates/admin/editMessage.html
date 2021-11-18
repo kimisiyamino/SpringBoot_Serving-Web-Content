@@ -6,62 +6,63 @@
     </head>
     <body>
         <div th:replace="fragments/bootstrap :: bootstrap"></div>
+        <div class="container">
+            <h1><u>Message editor:</u></h1>
+            <h2><span th:text="${messageModel.id}"></span>: <span th:text="${messageModel.author.username}"></span></h2>
+            <form th:method="post" th:action="@{/admin/message/edit}" th:object="${messageModel}">
 
-        <h1><u>Message editor:</u></h1>
-        <h2><span th:text="${messageModel.id}"></span>: <span th:text="${messageModel.author.username}"></span></h2>
-        <form th:method="post" th:action="@{/admin/message/edit}" th:object="${messageModel}">
+                <br>
+                <table>
+                    <tr>
+                        <td>
+                            <b>ID:</b>
+                        </td>
+                        <td>
+                            <label for="id">
+                                <input id="id" type="text" th:field="*{id}"/>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Text:</b>
+                        </td>
+                        <td>
+                            <label for="text">
+                                <textarea id="text" rows="10" cols="45" name="text" th:text="*{text}"></textarea>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Tag:</b>
+                        </td>
+                        <td>
+                            <label for="tag">
+                                <textarea id="tag" rows="10" cols="45" name="tag" th:text="*{tag}"></textarea>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <hr>
+
+                <label for="dateTime"> Date:
+                    <input id="dateTime" type="datetime-local" name="dateTime" th:value="*{dateTime}"/>
+                </label>
+                <br>
+                <br>
+                <button type="submit">SAVE</button>
+
+            </form>
 
             <br>
-            <table>
-                <tr>
-                    <td>
-                        <b>ID:</b>
-                    </td>
-                    <td>
-                        <label for="id">
-                            <input id="id" type="text" th:field="*{id}"/>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Text:</b>
-                    </td>
-                    <td>
-                        <label for="text">
-                            <textarea id="text" rows="10" cols="45" name="text" th:text="*{text}"></textarea>
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <b>Tag:</b>
-                    </td>
-                    <td>
-                        <label for="tag">
-                            <textarea id="tag" rows="10" cols="45" name="tag" th:text="*{tag}"></textarea>
-                        </label>
-                    </td>
-                </tr>
-            </table>
-            <br>
-            <hr>
-
-            <label for="dateTime"> Date:
-                <input id="dateTime" type="datetime-local" name="dateTime" th:value="*{dateTime}"/>
-            </label>
             <br>
             <br>
-            <button type="submit">SAVE</button>
+            <br>
 
-        </form>
-
-        <br>
-        <br>
-        <br>
-        <br>
-
-        <a onclick="javascript:history.back(); return false;">Назад</a>
-        <a href="/main">На главную</a>
+            <a onclick="javascript:history.back(); return false;">Назад</a>
+            <a href="/main">На главную</a>
+        </div>
     </body>
 </html>

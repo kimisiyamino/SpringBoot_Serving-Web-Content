@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head>
         <meta charset="UTF-8">
         <title>Main</title>
@@ -22,11 +22,10 @@
 
                 <div class="text-danger" th:if="${#fields.hasErrors('text')}" th:errors="*{text}">text error</div>
                 <div class="text-danger" th:if="${#fields.hasErrors('tag')}" th:errors="*{tag}">tag error</div>
+
+                <div th:replace="fragments/messageEditText :: messageEditText"></div>
                 <div th:if="${param.add}">
                     <b class="text-primary">Сообщение успешно добавлено</b>
-                </div>
-                <div th:if="${param.delete}">
-                    <b class="text-primary">Сообщение успешно удалено</b>
                 </div>
             </form>
             <hr/>
@@ -57,12 +56,10 @@
                 <i th:text="${message.tag}"/>
                 <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
 
-                <div th:if="${admin}">
+                <div sec:authorize ="hasAuthority('ADMIN')">
                     <a th:href="@{/admin/message/edit/{id}(id =${message.id})}">
                         <button class="btn btn-warning" type="submit">Редактировать</button>
                     </a>
-                </div>
-                <div th:if="${admin}">
                     <form method="post" th:action="@{/admin/message/delete/{id}(id =${message.id})}">
                         <button class="btn btn-danger" type="submit">Удалить</button>
                     </form>

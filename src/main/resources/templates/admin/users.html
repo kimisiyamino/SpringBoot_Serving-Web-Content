@@ -6,40 +6,56 @@
     </head>
     <body>
         <div th:replace="fragments/bootstrap :: bootstrap"></div>
+        <div class="container">
+            <h1>Users:</h1>
 
-        <div th:if="${userList.isEmpty()}">Пользователи не найдены</div>
+            <div th:if="${userList.isEmpty()}">Пользователи не найдены</div>
 
-        <table>
-            <tr>
-                <td>id</td>
-                <td>username</td>
-                <td>password</td>
-                <td>active</td>
-                <td>registrationDate</td>
-                <td>roles</td>
-                <td>actions</td>
-            </tr>
-            <tr th:each="user : ${userList}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.username}"></td>
-                <td th:text="${user.password}"></td>
-                <td th:text="${user.active}"></td>
-                <td th:text="${user.getFormatRegistrationDate()}"></td>
-                <td th:each="role : ${user.roles}">
-                    <span th:text="${role.name()}"></span>
-                </td>
-                <td>
-                    <form method="get" th:action="@{/admin/user/edit/{user}(user = ${user.id})}">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form method="post" th:action="@{/admin/user/delete/{id}(id = ${user.id})}">
-                        <button type="submit">Удалить</button>
-                    </form>
-                </td>
-            </tr>
+            <div th:if="${param.delete}">
+                <b class="text-primary">Пользователь успешно удален</b>
+            </div>
+            <div th:if="${param.edit}">
+                <b class="text-primary">Пользователь успешно отредактирован</b>
+            </div>
 
-        </table>
-        <a onclick="javascript:history.back(); return false;">Назад</a>
-        <a href="/main">На главную</a>
+            <table class="table table-hover table-bordered" th:if="${!userList.isEmpty()}">
+                <thead class="text-light bg-dark">
+                    <tr>
+                        <th scope="col">id</th>
+                        <th scope="col">username</th>
+                        <th scope="col">password</th>
+                        <th scope="col">active</th>
+                        <th scope="col">registrationDate</th>
+                        <th scope="col">roles</th>
+                        <th scope="col">actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="user : ${userList}">
+                        <td th:text="${user.id}"></td>
+                        <td th:text="${user.username}"></td>
+                        <td th:text="${user.password}"></td>
+                        <td th:text="${user.active}"></td>
+                        <td th:text="${user.getFormatRegistrationDate()}"></td>
+                        <td>
+                            <div th:each="role : ${user.roles}" th:text="${role.name()}"></div>
+                        </td>
+                        <td>
+                            <form method="get" th:action="@{/admin/message/{userId}(userId = ${user.id})}">
+                                <button class="btn btn-primary" type="submit">Сообщения</button>
+                            </form>
+                            <form method="get" th:action="@{/admin/user/edit/{user}(user = ${user.id})}">
+                                <button class="btn btn-warning" type="submit">Редактировать</button>
+                            </form>
+                            <form method="post" th:action="@{/admin/user/delete/{id}(id = ${user.id})}">
+                                <button class="btn btn-danger" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a onclick="javascript:history.back(); return false;">Назад</a>
+            <a href="/main">На главную</a>
+        </div>
     </body>
 </html>

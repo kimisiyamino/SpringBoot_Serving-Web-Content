@@ -1,7 +1,9 @@
 package com.eleonoralion.servingwebcontent.controller;
 
+import com.eleonoralion.servingwebcontent.entity.MessageModel;
 import com.eleonoralion.servingwebcontent.entity.Role;
 import com.eleonoralion.servingwebcontent.entity.User;
+import com.eleonoralion.servingwebcontent.repository.MessageRepository;
 import com.eleonoralion.servingwebcontent.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,13 +21,16 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/admin/user")
 @PreAuthorize("hasAuthority('ADMIN')")
-public class ServingWebContentUserController {
+public class UserController {
 
     private final UserRepository userRepository;
 
+    private final MessageRepository messageRepository;
+
     @Autowired
-    public ServingWebContentUserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, MessageRepository messageRepository) {
         this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     @GetMapping
@@ -41,9 +47,14 @@ public class ServingWebContentUserController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id){
-        userRepository.deleteById(id);
-        return "redirect:/admin/user?del";
+    public String deleteUser(@PathVariable("id") User author){
+        List<MessageModel> messages = messageRepository.findAllByAuthor(author);
+        for (MessageModel messageModel : messages){
+            messageModel.setAuthor(null);
+            messageRepository.save(messageModel);
+        }
+        userRepository.deleteById(author.getId());
+        return "redirect:/admin/user?delete";
     }
 
     @PostMapping("/edit")
@@ -69,6 +80,6 @@ public class ServingWebContentUserController {
 
         userRepository.save(user);
 
-        return "redirect:/admin/user?ed";
+        return "redirect:/admin/user?edit";
     }
 }

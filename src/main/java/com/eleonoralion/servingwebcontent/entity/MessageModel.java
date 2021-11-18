@@ -49,6 +49,9 @@ public class MessageModel {
     }
 
     public String getUsername(){
+        if(author == null){
+            return "<deleted user>";
+        }
         return author.getUsername();
     }
 
@@ -65,6 +68,9 @@ public class MessageModel {
     }
 
     public User getAuthor() {
+        if (author == null){
+            return new User("<deleted user>");
+        }
         return author;
     }
 

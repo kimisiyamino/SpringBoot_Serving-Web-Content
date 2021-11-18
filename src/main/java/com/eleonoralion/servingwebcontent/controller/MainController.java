@@ -1,7 +1,6 @@
 package com.eleonoralion.servingwebcontent.controller;
 
 import com.eleonoralion.servingwebcontent.entity.MessageModel;
-import com.eleonoralion.servingwebcontent.entity.Role;
 import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +14,14 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
-public class ServingWebContentMainController {
+public class MainController {
 
     private final MessageRepository messageRepository;
 
     private static final String MAIN_PATH = "/main";
 
     @Autowired
-    public ServingWebContentMainController(MessageRepository messageRepository) {
+    public MainController(MessageRepository messageRepository) {
         this.messageRepository = messageRepository;
     }
 
@@ -42,7 +41,10 @@ public class ServingWebContentMainController {
 
 
     @GetMapping(MAIN_PATH)
-    public String main(@AuthenticationPrincipal User user, @RequestParam(name = "filter", required = false) String filter, Map<String, Object> model, MessageModel messageModel) {
+    public String main(@AuthenticationPrincipal User user,
+                       @RequestParam(name = "filter", required = false) String filter,
+                       Map<String, Object> model,
+                       MessageModel messageModel) {
 
         if(filter == null || filter.isEmpty()) {
             model.put("messagesList", messageRepository.findAllByOrderById());
@@ -51,9 +53,6 @@ public class ServingWebContentMainController {
             model.put("messagesList", messageRepository.findByTagContainingIgnoreCase(filter));
             model.put("filter", true);
         }
-
-        if (user.getRoles().contains(Role.ADMIN))
-            model.put("admin", true);
 
         model.put("filterValue", filter);
 

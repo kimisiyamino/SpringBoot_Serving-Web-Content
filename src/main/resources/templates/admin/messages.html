@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Messages</title>
+    </head>
+    <body>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
+
+        <div class="container">
+            <h1>Messages: </h1>
+
+            <div th:if="${messagesList.isEmpty()}">Сообщения не найдены</div>
+
+            <div th:replace="fragments/messageEditText :: messageEditText"></div>
+
+            <table class="table table-hover table-bordered table-striped" th:if="${!messagesList.isEmpty()}">
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>text</th>
+                        <th>tag</th>
+                        <th>author</th>
+                        <th>date</th>
+                        <th>actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="message : ${messagesList}">
+                        <td th:text="${message.id}"></td>
+                        <td th:text="${message.text}"></td>
+                        <td th:text="${message.tag}"></td>
+                        <td><a th:text="${message.author.username}" th:href="@{/user/{id}(id = ${message.author.id})}"></a></td>
+                        <td th:text="${message.getFormatDateTime()}"></td>
+                        <td>
+                            <form method="get" th:action="@{/admin/message/edit/{id}(id = ${message.id})}">
+                                <button class="btn btn-warning" type="submit">Редактировать</button>
+                            </form>
+                            <form method="post" th:action="@{/admin/message/delete/{id}(id = ${message.id})}">
+                                <button class="btn btn-danger" type="submit">Удалить</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a onclick="javascript:history.back(); return false;">Назад</a>
+            <a href="/main">На главную</a>
+        </div>
+    </body>
+</html>
