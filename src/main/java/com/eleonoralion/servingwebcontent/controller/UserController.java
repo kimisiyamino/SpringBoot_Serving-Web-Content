@@ -9,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +46,11 @@ public class UserController {
     public String editUser(@PathVariable User user, Model model){
         model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
+
+        // Logs
+        //System.out.println("DATABASE USER:");
+        //.out.println(user.toString());
+
         return "admin/editUser";
     }
 
@@ -58,28 +66,50 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String saveUser(@RequestParam("username") String username,
-                           @RequestParam("password") String password,
-                           @RequestParam("registrationDate") String registrationDate,
-                           @RequestParam Map<String, String> form,
-                           @RequestParam("id") User user){
+    public String saveUser(@RequestParam Map<String, String> form,
+                           Model model,
+                           @Valid User user, BindingResult bindingResult){
+        // Logs
+//        System.out.println("MODEL USER:");
+//        System.out.println(user.toString());
+//        System.out.println("====================================================");
+//
+//        System.out.println("FORM VALUES:");
+//        form.forEach((key1, value) -> System.out.println(key1 + " " + value));
+//        System.out.println("====================================================");
 
+
+            // Наполняем User ролями из Form
+
+        // Создаём Set из String наименований ролей из enum Role
         Set<String> roles = Arrays.stream(Role.values()).map(role -> role.name()).collect(Collectors.toSet());
+        // Очищаем текущего User от roles
         user.getRoles().clear();
-
+        // Ищем ключи из формы по именам ролей созданного нами Set, и добавляем нашему User, если таковые ключи равны
         for (String key : form.keySet()) {
             if(roles.contains(key)){
                 user.getRoles().add(Role.valueOf(key));
             }
         }
 
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setRegistrationDate(LocalDateTime.parse(registrationDate));
-        user.setActive(form.containsKey("active"));
+            // Обработка ошибок
+        // Roles
+        if(user.getRoles().size() == 0){
+            model.addAttribute("errorRolesMessage", "Роли не выбраны!");
+            model.addAttribute("user", user);
+            model.addAttribute("roles", Role.values());
+            return "admin/editUser";
+        }
 
+        // username, password, registrationDate
+        if(bindingResult.hasErrors()){
+            model.addAttribute("user", user);
+            model.addAttribute("roles", Role.values());
+            return "admin/editUser";
+        }
+
+            // Сохраняем пользователя
         userRepository.save(user);
-
         return "redirect:/admin/user?edit";
     }
 }

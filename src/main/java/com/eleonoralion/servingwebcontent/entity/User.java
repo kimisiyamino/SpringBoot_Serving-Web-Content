@@ -34,7 +34,8 @@ public class User implements UserDetails {
     @NotNull
     private Boolean active;
 
-    @DateTimeFormat
+    @NotNull(message =  "Ошибка в Registration Date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", fallbackPatterns = { "yyyy-MM-dd'T'HH:mm" })
     private LocalDateTime registrationDate;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
@@ -46,10 +47,11 @@ public class User implements UserDetails {
         username="";
         password="";
         active = true;
-        registrationDate = LocalDateTime.MIN;
+        //registrationDate;
         roles = new HashSet<>();
     }
 
+    // Конструктор для удаленного пользователя
     public User(String username) {
         this.username = username;
         password="";

@@ -164,7 +164,7 @@ https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.rep
 	
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
-		Thymeleaf security, проверка авторизации в Thymeleaf
+		Thymeleaf security, проверка авторизации и роли ADMIN в Thymeleaf
 
 		<dependency>
 			<groupId>org.thymeleaf.extras</groupId>
@@ -173,8 +173,12 @@ https://docs.spring.io/spring-data/jpa/docs/1.5.0.RELEASE/reference/html/jpa.rep
 		
 		<li sec:authorize ="hasAuthority('ADMIN')">
             <a href="/admin/main">Admin Menu</a>
-        </li>
-
+        </li>	
+		
+		Ошибка
+		Namespace 'sec' is not bound 
+		Решение
+		xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
 === === === === === === === === === === === === === === === === === === === === === === === === 
 
 

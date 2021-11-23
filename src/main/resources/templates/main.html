@@ -52,7 +52,7 @@
 
             <div th:each="message : ${messagesList}">
                 <p>ID: <b th:text="${message.id}"/> </p>
-                <p th:text="${message.text}"/>
+                <div th:text="${message.text}"/>
                 <i th:text="${message.tag}"/>
                 <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
 

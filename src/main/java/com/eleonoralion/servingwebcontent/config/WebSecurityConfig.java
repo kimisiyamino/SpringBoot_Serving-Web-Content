@@ -38,9 +38,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .logout()
                     .permitAll();
-               // .and()
-               //     .exceptionHandling()
-               //     .accessDeniedPage("/error");    // 403
     }
 
     @Override
