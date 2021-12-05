@@ -5,15 +5,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "usr")
@@ -31,6 +26,14 @@ public class User implements UserDetails {
     @Size(min = 4, max = 16, message = "Длинна пароля должна быть от 4 до 16 символов")
     private String password;
 
+    @NotBlank(message = "Поле email пустое!")
+    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Некорректный email")
+    private String email;
+    @NotNull
+    private Boolean confirmEmail;
+
+    private String activationCode;
+
     @NotNull
     private Boolean active;
 
@@ -43,31 +46,39 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+   // private UserInfo userInfo;
+
     public User() {
-        username="";
-        password="";
-        active = true;
-        //registrationDate;
-        roles = new HashSet<>();
+        roles = new HashSet<>(); // ??
+        //userInfo = new UserInfo();
     }
 
     // Конструктор для удаленного пользователя
     public User(String username) {
         this.username = username;
         password="";
+        email = "";
+        activationCode = "";
         active = true;
+        confirmEmail=false;
         registrationDate = LocalDateTime.MIN;
-        roles = new HashSet<>();
+       // userInfo = new UserInfo();
+        //roles = Collections.singleton(Role.USER);
     }
 
-    public User(Long id, String username, String password, boolean active, LocalDateTime registrationDate, Set<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.active = active;
-        this.registrationDate = registrationDate;
-        this.roles = roles;
+    // Конструктор для регистрации
+    public User(RegistrationForm registrationForm) {
+        this.username = registrationForm.getUsername();
+        this.password = registrationForm.getPassword();
+        this.email = registrationForm.getEmail();
+        this.activationCode = UUID.randomUUID().toString();
+        this.active = false;
+        this.registrationDate = LocalDateTime.now().withNano(0);
+        this.roles = Collections.singleton(Role.USER); // ??
+        userInfo = new UserInfo();
     }
+
 
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
@@ -150,6 +161,46 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getActivationCode() {
+        return activationCode;
+    }
+
+    public void setActivationCode(String activationCode) {
+        this.activationCode = activationCode;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Boolean getConfirmEmail() {
+        return confirmEmail;
+    }
+
+    public void setConfirmEmail(Boolean confirmEmail) {
+        this.confirmEmail = confirmEmail;
+    }
+
+   // public UserInfo getUserInfo() {
+
+ //       return userInfo;
+ //   }
+
+  //  public void setUserInfo(UserInfo userInfo) {
+  //      this.userInfo = userInfo;
+//    }
     @Override
     public String toString() {
         return "User{" +

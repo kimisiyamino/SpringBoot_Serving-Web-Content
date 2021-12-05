@@ -23,6 +23,7 @@
                     <tr>
                         <th scope="col">id</th>
                         <th scope="col">username</th>
+                        <th scope="col">email</th>
                         <th scope="col">password</th>
                         <th scope="col">active</th>
                         <th scope="col">registrationDate</th>
@@ -33,7 +34,8 @@
                 <tbody>
                     <tr th:each="user : ${userList}">
                         <td th:text="${user.id}"></td>
-                        <td th:text="${user.username}"></td>
+                        <td><a th:text="${user.username}" th:href="@{/user/{username}(username = ${user.username})}"></a></td>
+                        <td th:text="${user.email}"></td>
                         <td th:text="${user.password}"></td>
                         <td th:text="${user.active}"></td>
                         <td th:text="${user.getFormatRegistrationDate()}"></td>

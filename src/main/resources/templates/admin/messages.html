@@ -30,7 +30,7 @@
                         <td th:text="${message.id}"></td>
                         <td th:text="${message.text}"></td>
                         <td th:text="${message.tag}"></td>
-                        <td><a th:text="${message.author.username}" th:href="@{/user/{id}(id = ${message.author.id})}"></a></td>
+                        <td><a th:text="${message.username}" th:href="@{/user/{username}(username = ${message.username})}"></a></td>
                         <td th:text="${message.getFormatDateTime()}"></td>
                         <td>
                             <form method="get" th:action="@{/admin/message/edit/{id}(id = ${message.id})}">

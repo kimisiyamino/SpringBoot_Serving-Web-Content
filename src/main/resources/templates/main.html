@@ -54,7 +54,7 @@
                 <p>ID: <b th:text="${message.id}"/> </p>
                 <div th:text="${message.text}"/>
                 <i th:text="${message.tag}"/>
-                <p>author: <b th:text="${message.username}"/> <i th:text="${message.getFormatDateTime()}"/>  </p>
+                <p>author: <b><a th:text="${message.username}" th:href="@{/user/{username}(username = ${message.username})}"></a></b> <i th:text="${message.getFormatDateTime()}"/> </p>
 
                 <div sec:authorize ="hasAuthority('ADMIN')">
                     <a th:href="@{/admin/message/edit/{id}(id =${message.id})}">

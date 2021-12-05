@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile</title>
+    </head>
+    <body>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
+        <div th:replace="fragments/navigationPanel" :: navigationPanel></div>
+
+        <div class="container">
+
+            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                <div th:text="${user.id}" class="card-header"></div>
+                <div class="card-body">
+                    <h5 th:text="${user.username}" class="card-title"></h5>
+                    <p th:text="${user.email}" class="card-text"></p>
+                    <p th:text="${user.registrationDate}" class="card-text"></p>
+                    <p th:text="${user.activationCode}" class="card-text"></p>
+
+                    <p th:text="${user.userInfo.firstName}" class="card-text"></p>
+                    <p th:text="${user.userInfo.lastName}" class="card-text"></p>
+                    <p th:text="${user.userInfo.age}" class="card-text"></p>
+
+                    <div th:each="role : ${user.roles}">
+                        <span th:text="${role}"></span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

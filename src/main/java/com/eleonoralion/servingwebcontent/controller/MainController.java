@@ -39,7 +39,6 @@ public class MainController {
             return "redirect:/main";
     }
 
-
     @GetMapping(MAIN_PATH)
     public String main(@AuthenticationPrincipal User user,
                        @RequestParam(name = "filter", required = false) String filter,
@@ -60,7 +59,10 @@ public class MainController {
     }
 
     @PostMapping(MAIN_PATH)
-    public String addMessage(@AuthenticationPrincipal User user, Map<String, Object> model, @Valid MessageModel messageModel, BindingResult bindingResult){
+    public String addMessage(@AuthenticationPrincipal User user,
+                             Map<String, Object> model,
+                             @Valid MessageModel messageModel,
+                             BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
             model.put("messagesList", messageRepository.findAll());

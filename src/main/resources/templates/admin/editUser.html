@@ -40,6 +40,18 @@
                             </label>
                         </td>
                     </tr>
+
+                    <tr>
+                        <td>
+                            <b>Email:</b>
+                        </td>
+                        <td>
+                            <label for="email">
+                                <input id="email" type="email" th:field="*{email}"/>
+                            </label>
+                        </td>
+                    </tr>
+
                     <tr>
                         <td>
                             <b>Password:</b>
@@ -70,8 +82,9 @@
                 <br>
                 <br>
 
-                <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">text error</div>
-                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">tag error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</div>
                 <div class="text-danger" th:if="${#fields.hasErrors('registrationDate')}" th:errors="*{registrationDate}">registrationDate error</div>
                 <div class="text-danger" th:if="${errorRolesMessage}" th:text="${errorRolesMessage}"></div>
                 <button type="submit">SAVE</button>

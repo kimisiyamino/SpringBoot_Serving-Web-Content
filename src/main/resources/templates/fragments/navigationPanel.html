@@ -19,7 +19,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Профиль</a>
+                            <a class="nav-link" th:href="@{/user/{username}(username = ${#authentication.getName()})}">Профиль</a>
                         </li>
 
                         <li class="nav-item dropdown">
@@ -34,13 +34,13 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item" sec:authorize ="hasAuthority('ADMIN')">
+                        <li class="nav-item" sec:authorize="hasAuthority('ADMIN')">
                             <a class="nav-link text-danger" href="/admin/main">Admin Menu</a>
                         </li>
 
                     </ul>
 
-                    <h2 class="navbar-text me-5" th:inline="text">Привет, <a href="">[[${#httpServletRequest.remoteUser}]]</a></h2>
+                    <h2 class="navbar-text me-5" th:inline="text">Привет, <a th:href="@{/user/{username}(username = ${#authentication.getName()})}">[[${#httpServletRequest.remoteUser}]]</a></h2>
 
                     <form class="d-flex" th:action="@{/logout}" method="post">
 
