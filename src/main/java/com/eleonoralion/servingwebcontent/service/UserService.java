@@ -9,6 +9,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -31,15 +34,23 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean addUser(User user){
-
         userRepository.save(user);
+        return true;
+    }
+
+    public boolean updateUser(User user){
+        user.getUserInfo().setId(user.getId());
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean sendEmailMessage(User user){
 
         String message = String.format(MESSAGE,
                 user.getUsername(),
                 user.getActivationCode());
 
         mailSender.send(user.getEmail(), "Activation Code", message);
-
         return true;
     }
 
@@ -58,13 +69,20 @@ public class UserService implements UserDetailsService {
         return true;
     }
 
-    public boolean checkUserAndEmail(User user){
-        if(userRepository.findByUsername(user.getUsername()) != null){
+    public boolean checkUserAndEmail(String username, String email){
+        if(userRepository.findByUsername(username) != null){
             return false;
         }
-        if(userRepository.findByEmail(user.getEmail()) != null){
+        if(userRepository.findByEmail(email) != null){
             return false;
         }
         return true;
+    }
+
+    public boolean findByUsernameAndNotThisId(String data, Long id){
+        return userRepository.findByUsernameAndNotThisId(data, id) == null;
+    }
+    public boolean findByEmailAndNotThisId(String data, Long id){
+        return userRepository.findByEmailAndNotThisId(data, id) == null;
     }
 }

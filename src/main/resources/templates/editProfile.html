@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Edit profile</title>
+    </head>
+    <body>
+        <div th:replace="fragments/bootstrap :: bootstrap"></div>
+        <div th:replace="fragments/navigationPanel" :: navigationPanel></div>
+
+        <br>
+        <br>
+
+        <div class="container">
+            <h1><u>Profile editor:</u></h1>
+
+            <div th:if="${param.send}">
+                <b class="text-primary">Письмо с кодом активации успешно отправлено!</b>
+            </div>
+
+            <form th:method="post" th:action="@{/user/edit}" th:object="${user}">
+
+                <hr>
+                <br>
+
+                <div class="card border-info mb-3">
+
+                    <h2 class="card-header"><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
+
+                    <div class="card-body">
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>Username:</b>
+                                </td>
+                                <td>
+                                    <label for="username">
+                                        <input id="username" type="text" th:field="*{username}"/>
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Password:</b>
+                                </td>
+                                <td>
+                                    <label for="password">
+                                        <input id="password" type="text" th:field="*{password}"/>
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2">
+                                    <br>
+                                    <i>При изменении email будет отправлено письмо с кодом подтверждения.<br>
+                                    </i>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Email:</b>
+                                </td>
+                                <td>
+                                    <label for="email">
+                                        <input id="email" type="email" th:field="*{email}"/>
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Confirm Email:</b>
+                                </td>
+                                <td>
+                                    <label for="confirmEmail">
+                                        <input id="confirmEmail" name="confirmEmail" type="checkbox" th:checked="*{confirmEmail}"/>
+                                    </label>
+                                </td>
+                            </tr>
+
+                        </table>
+
+                        <br>
+                        <hr>
+
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>First Name:</b>
+                                </td>
+                                <td>
+                                    <label for="firstName">
+                                        <input id="firstName" type="text" th:field="*{firstName}"/>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Last Name:</b>
+                                </td>
+                                <td>
+                                    <label for="lastName">
+                                        <input id="lastName" type="text" th:field="*{lastName}"/>
+                                    </label>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Age:</b>
+                                </td>
+                                <td>
+                                    <label for="age">
+                                        <input id="age" type="text" th:field="*{age}"/>
+                                    </label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <a th:href="@{/user/{username}(username = ${#authentication.getName()})}" class="btn btn-warning">Назад</a>
+                </div>
+
+                <br>
+
+                <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
+                <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</div>
+                <div class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+                <button type="submit">SAVE</button>
+            </form>
+
+            <br>
+            <br>
+            <br>
+
+        </div>
+
+    </body>
+</html>

@@ -30,12 +30,12 @@ public class User implements UserDetails {
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "Некорректный email")
     private String email;
     @NotNull
-    private Boolean confirmEmail;
+    private boolean confirmEmail;
 
     private String activationCode;
 
     @NotNull
-    private Boolean active;
+    private boolean active;
 
     @NotNull(message =  "Ошибка в Registration Date")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", fallbackPatterns = { "yyyy-MM-dd'T'HH:mm" })
@@ -46,8 +46,16 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    //@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-   // private UserInfo userInfo;
+    //@OneToOne(mappedBy = "usr", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinTable(name = "usr_info",
+//            joinColumns = @JoinColumn(name="user_id")
+//    )
+//    private UserInfo userInfo;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private UserInfo userInfo;
 
     public User() {
         roles = new HashSet<>(); // ??
@@ -63,7 +71,7 @@ public class User implements UserDetails {
         active = true;
         confirmEmail=false;
         registrationDate = LocalDateTime.MIN;
-       // userInfo = new UserInfo();
+        //userInfo = new UserInfo();
         //roles = Collections.singleton(Role.USER);
     }
 
@@ -72,13 +80,15 @@ public class User implements UserDetails {
         this.username = registrationForm.getUsername();
         this.password = registrationForm.getPassword();
         this.email = registrationForm.getEmail();
-        this.activationCode = UUID.randomUUID().toString();
+        //this.activationCode = UUID.randomUUID().toString();
         this.active = false;
+        this.confirmEmail = false;
         this.registrationDate = LocalDateTime.now().withNano(0);
         this.roles = Collections.singleton(Role.USER); // ??
-        userInfo = new UserInfo();
-    }
 
+        userInfo = new UserInfo();
+        userInfo.setUser(this);
+    }
 
     public boolean isAdmin(){
         return roles.contains(Role.ADMIN);
@@ -193,23 +203,27 @@ public class User implements UserDetails {
         this.confirmEmail = confirmEmail;
     }
 
-   // public UserInfo getUserInfo() {
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
 
- //       return userInfo;
- //   }
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+    }
 
-  //  public void setUserInfo(UserInfo userInfo) {
-  //      this.userInfo = userInfo;
-//    }
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", confirmEmail=" + confirmEmail +
+                ", activationCode='" + activationCode + '\'' +
                 ", active=" + active +
                 ", registrationDate=" + registrationDate +
                 ", roles=" + roles +
+                ", userInfo=" + userInfo +
                 '}';
     }
 }

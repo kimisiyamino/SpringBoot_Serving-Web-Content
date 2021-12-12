@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
     <head>
         <meta charset="UTF-8">
         <title>Profile</title>
@@ -8,26 +8,35 @@
         <div th:replace="fragments/bootstrap :: bootstrap"></div>
         <div th:replace="fragments/navigationPanel" :: navigationPanel></div>
 
+        <br>
+        <br>
+
         <div class="container">
 
-            <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+            <div class="card border-info mb-3" style="max-width: 18rem;">
                 <div th:text="${user.id}" class="card-header"></div>
                 <div class="card-body">
-                    <h5 th:text="${user.username}" class="card-title"></h5>
+                    <h4 th:text="${user.username}" class="card-title"></h4>
                     <p th:text="${user.email}" class="card-text"></p>
-                    <p th:text="${user.registrationDate}" class="card-text"></p>
-                    <p th:text="${user.activationCode}" class="card-text"></p>
 
-                    <p th:text="${user.userInfo.firstName}" class="card-text"></p>
-                    <p th:text="${user.userInfo.lastName}" class="card-text"></p>
-                    <p th:text="${user.userInfo.age}" class="card-text"></p>
+
+                    <i><span th:text="${user.userInfo.getFirstName()}" class="card-text"></span>
+                    <span th:text="${user.userInfo.lastName}" class="card-text"></span>,
+                        <span th:text="${user.userInfo.age}" class="card-text"></span></i>
 
                     <div th:each="role : ${user.roles}">
-                        <span th:text="${role}"></span>
+                        <b><span th:text="${role}"></span></b>
                     </div>
+                    <hr>
+                    <i>since:</i> <p th:text="${user.getFormatRegistrationDate()}" class="card-text"></p>
 
                 </div>
+
+                <a th:if="${#authentication.getName()} == ${user.username}" th:href="@{/user/edit/{id}(id =${user.id})}">
+                    <button class="btn btn-warning" type="submit">Редактировать</button>
+                </a>
             </div>
+
         </div>
     </body>
 </html>

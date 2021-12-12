@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class RegistrationController {
@@ -40,14 +41,17 @@ public class RegistrationController {
             return "registration";
         }
 
-        User user = new User(registrationForm);
-
         // Если пользователь есть
-        if(!userService.checkUserAndEmail(user)){
+        if(!userService.checkUserAndEmail(registrationForm.getUsername(), registrationForm.getEmail())){
             model.put("message", "Пользователь с таким логином или email уже существует!");
             return "registration";
         }
 
+        // Сохраняем пользователя, отправляем письмо
+        User user = new User(registrationForm);
+
+        user.setActivationCode(UUID.randomUUID().toString());
+        userService.sendEmailMessage(user);
         userService.addUser(user);
 
         // Если всё успешно

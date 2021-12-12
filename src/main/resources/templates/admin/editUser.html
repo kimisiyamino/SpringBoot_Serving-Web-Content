@@ -10,6 +10,11 @@
         <div class="container">
             <h1><u>User editor:</u></h1>
             <h2><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
+
+            <div th:if="${param.send}">
+                <b class="text-primary">Письмо с кодом активации успешно отправлено!</b>
+            </div>
+
             <form th:method="post" th:action="@{/admin/user/edit}" th:object="${user}">
 
                 <label for="active">
@@ -43,6 +48,27 @@
 
                     <tr>
                         <td>
+                            <b>Password:</b>
+                        </td>
+                        <td>
+                            <label for="password">
+                                <input id="password" type="text" th:field="*{password}"/>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <br><br>
+                           <i>При изменении email через меню админа, письмо с подтверждением отправлено не будет.<br>
+                               Для этого используйте кнопку <b>"Send activation code".</b> <br>
+                              Либо без отправки письма, Вы можете сами подтвердить email поставив галочку <b>Confirm Email</b>
+                           </i>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
                             <b>Email:</b>
                         </td>
                         <td>
@@ -54,15 +80,29 @@
 
                     <tr>
                         <td>
-                            <b>Password:</b>
+                            <b>Confirm Email:</b>
                         </td>
                         <td>
-                            <label for="password">
-                                <input id="password" type="text" th:field="*{password}"/>
+                            <label for="confirmEmail">
+                                <input id="confirmEmail" name="confirmEmail" type="checkbox" th:checked="*{confirmEmail}"/>
+                            </label>
+                            <a th:href="@{/admin/user/send/{user}(user=${user.id})}" class="btn btn-danger">Send activation code</a>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>Activation Code:</b>
+                        </td>
+                        <td>
+                            <label for="activationCode">
+                                <input id="activationCode" type="text" th:field="*{activationCode}"/>
                             </label>
                         </td>
                     </tr>
+
                 </table>
+
                 <br>
                 <hr>
 
@@ -80,13 +120,50 @@
                     <input id="registrationDate" type="datetime-local" step="1" name="registrationDate" th:value="*{registrationDate}"/>
                 </label>
                 <br>
+                <hr>
+
+                <table>
+                    <tr>
+                        <td>
+                            <b>First Name:</b>
+                        </td>
+                        <td>
+                            <label for="firstName">
+                                <input id="firstName" type="text" th:field="*{userInfo.firstName}"/>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Last Name:</b>
+                        </td>
+                        <td>
+                            <label for="lastName">
+                                <input id="lastName" type="text" th:field="*{userInfo.lastName}"/>
+                            </label>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>Age:</b>
+                        </td>
+                        <td>
+                            <label for="age">
+                                <input id="age" type="text" th:field="*{userInfo.age}"/>
+                            </label>
+                        </td>
+                    </tr>
+                </table>
+
+
                 <br>
 
                 <div class="text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username error</div>
                 <div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">password error</div>
                 <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email error</div>
                 <div class="text-danger" th:if="${#fields.hasErrors('registrationDate')}" th:errors="*{registrationDate}">registrationDate error</div>
-                <div class="text-danger" th:if="${errorRolesMessage}" th:text="${errorRolesMessage}"></div>
+                <div class="text-danger" th:if="${errorMessage}" th:text="${errorMessage}"></div>
                 <button type="submit">SAVE</button>
             </form>
 
