@@ -20,19 +20,20 @@
 
         <p>Файлы формата <b>png</b>, <b>jpeg</b></p>
         <p>Максимальный объем <b>2048 кб</b></p>
-        <div th:if="${message}">
-            <div th:text="${message}"></div>
+        <div th:if="${errorMessage}">
+            <div th:text="${errorMessage}"></div>
         </div>
 
         <br>
         <hr>
             <div th:each="pic : ${pictures}">
-                <p th:text="${pic.getFileName()}"/>
-                <img th:src="@{/img/{file}(file = ${pic.fileName})}">
+                <div th:if="${pic.getFileName()}">
+                    <img th:src="@{/img/{file}(file = ${pic.fileName})}"/>
 
-                <form method="post" th:action="@{/admin/testpage/delete/{id}(id = ${pic.id})}">
-                    <button type="submit">Удалить</button>
-                </form>
+                    <form method="post" th:action="@{/admin/testpage/delete/{id}(id = ${pic.id})}">
+                        <button type="submit">Удалить</button>
+                    </form>
+                </div>
             </div>
     </body>
 </html>

@@ -18,14 +18,14 @@
                 <b class="text-primary">Письмо с кодом активации успешно отправлено!</b>
             </div>
 
-            <form th:method="post" th:action="@{/user/edit}" th:object="${user}">
+            <form th:method="post" th:action="@{/user/edit}" th:object="${editProfileForm}">
 
                 <hr>
                 <br>
 
                 <div class="card border-info mb-3">
 
-                    <h2 class="card-header"><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
+                    <h2 class="card-header"><span th:text="*{headerName}"></span></h2>
 
                     <div class="card-body">
                         <table>
@@ -75,9 +75,8 @@
                                     <b>Confirm Email:</b>
                                 </td>
                                 <td>
-                                    <label for="confirmEmail">
-                                        <input id="confirmEmail" name="confirmEmail" type="checkbox" th:checked="*{confirmEmail}"/>
-                                    </label>
+                                    <b class="text-success" th:if="*{confirmEmail}" th:text="true"></b>
+                                    <b class="text-danger" th:if="*{!confirmEmail}" th:text="false"></b>
                                 </td>
                             </tr>
 

@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Entity
-@Table(name = "message_model")
-public class MessageModel {
+@Table(name = "message")
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,15 +33,15 @@ public class MessageModel {
     @DateTimeFormat(pattern="HH:mm:ss dd-MM-yyyy")
     private LocalDateTime dateTime;
 
-    public MessageModel() {
+    public Message() {
     }
 
-    public MessageModel(String text, String tag) {
+    public Message(String text, String tag) {
         this.text = text;
         this.tag = tag;
     }
 
-    public MessageModel(String text, String tag, User author, LocalDateTime dateTime) {
+    public Message(String text, String tag, User author, LocalDateTime dateTime) {
         this.text = text;
         this.tag = tag;
         this.author = author;

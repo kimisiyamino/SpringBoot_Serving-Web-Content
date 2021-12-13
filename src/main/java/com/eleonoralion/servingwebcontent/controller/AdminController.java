@@ -1,6 +1,6 @@
 package com.eleonoralion.servingwebcontent.controller;
 
-import com.eleonoralion.servingwebcontent.entity.Picture;
+import com.eleonoralion.servingwebcontent.entity.UserPhoto;
 import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.repository.PictureRepository;
 import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException;
@@ -38,7 +38,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/testpage")
-    public String getTestpage(Model model){
+    public String getTestPage(Model model){
         model.addAttribute("pictures", pictureRepository.findAllByOrderById());
         return "/admin/testpage";
     }
@@ -49,16 +49,16 @@ public class AdminController {
                          RedirectAttributes redirectAttributes){
 
         if(file.isEmpty()){
-            redirectAttributes.addFlashAttribute("message", "Файл отсутствует!");
+            redirectAttributes.addFlashAttribute("errorMessage", "Файл отсутствует!");
             return "redirect:/admin/testpage";
         }
 
         if(!Objects.equals(file.getContentType(), "image/jpeg") && !Objects.equals(file.getContentType(), "image/png")) {
-            redirectAttributes.addFlashAttribute("message", "Неверный формат!");
+            redirectAttributes.addFlashAttribute("errorMessage", "Неверный формат!");
             return "redirect:/admin/testpage";
         }
 
-        Picture picture = new Picture("", user);
+        UserPhoto picture = new UserPhoto("", user);
 
         if(file != null && !file.getOriginalFilename().isEmpty()){
 
@@ -86,13 +86,13 @@ public class AdminController {
     @PostMapping("/admin/testpage/delete/{id}")
     public String deletePicture(@PathVariable Long id, RedirectAttributes redirectAttributes){
         pictureRepository.deleteById(id);
-        redirectAttributes.addFlashAttribute("message", "Файл удалён!");
+        redirectAttributes.addFlashAttribute("errorMessage", "Файл удалён!");
         return "redirect:/admin/testpage";
     }
 
     @ExceptionHandler(SizeLimitExceededException.class)
     public String handleMultipartException(SizeLimitExceededException e, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("message", "Большой размер файла!");
+        redirectAttributes.addFlashAttribute("errorMessage", "Большой размер файла!");
         return "redirect:/admin/testpage";
     }
 }

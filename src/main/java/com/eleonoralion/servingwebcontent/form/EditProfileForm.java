@@ -1,4 +1,6 @@
-package com.eleonoralion.servingwebcontent.entity;
+package com.eleonoralion.servingwebcontent.form;
+
+import com.eleonoralion.servingwebcontent.entity.User;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +10,8 @@ import javax.validation.constraints.Size;
 public class EditProfileForm {
 
     private Long id;
+
+    private String headerName;
 
     @NotBlank(message = "Поле username пустое!")
     @Size(min = 4, max = 16, message = "Длинна username должна быть от 4 до 16 символов")
@@ -30,7 +34,26 @@ public class EditProfileForm {
     private String lastName;
     private Integer age;
 
-    public EditProfileForm() {
+    public EditProfileForm() {}
+
+    // Конструктор для создания формы личного редактирования профиля
+    public EditProfileForm(User user) {
+        this.headerName = user.getId() + ": " + user.getUsername();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.email = user.getEmail();
+        this.confirmEmail = user.getConfirmEmail();
+        this.firstName = user.getUserInfo().getFirstName();
+        this.lastName = user.getUserInfo().getLastName();
+        this.age = user.getUserInfo().getAge();
+    }
+
+    public String getHeaderName() {
+        return headerName;
+    }
+
+    public void setHeaderName(String headerName) {
+        this.headerName = headerName;
     }
 
     public Long getId() {

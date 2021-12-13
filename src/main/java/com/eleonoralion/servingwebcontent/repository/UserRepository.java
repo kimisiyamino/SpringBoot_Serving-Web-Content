@@ -19,12 +19,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     User findByActivationCode(String code);
 
-    //language=SQL
-//    @Query(nativeQuery = true, value = "SELECT username FROM usr u WHERE u.username LIKE ?1 AND NOT u.id = ?2")
-//    User findByUsernameAndNotThisId(String username, Long id);
-//    @Query(nativeQuery = true, value = "SELECT email FROM usr u WHERE u.email LIKE ?1 AND NOT u.id = ?2")
-//    User findByEmailAndNotThisId(String email, Long id);
-
     @Query("FROM User WHERE username LIKE :username AND NOT id = :id")
     User findByUsernameAndNotThisId(@Param("username") String username,
                                     @Param("id") Long id);

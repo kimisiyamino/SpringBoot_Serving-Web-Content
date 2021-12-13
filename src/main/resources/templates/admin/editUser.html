@@ -9,7 +9,7 @@
 
         <div class="container">
             <h1><u>User editor:</u></h1>
-            <h2><span th:text="${user.id}"></span>: <span th:text="${user.username}"></span></h2>
+            <h2><span th:text="${#session.getAttribute('headerUserName')}"></span></h2>
 
             <div th:if="${param.send}">
                 <b class="text-primary">Письмо с кодом активации успешно отправлено!</b>
@@ -30,9 +30,7 @@
                             <b>ID:</b>
                         </td>
                         <td>
-                            <label for="id">
-                                <input id="id" type="text" th:field="*{id}"/>
-                            </label>
+                            <p th:text="*{id}"></p>
                         </td>
                     </tr>
                     <tr>

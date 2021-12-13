@@ -3,20 +3,23 @@ package com.eleonoralion.servingwebcontent.entity;
 import javax.persistence.*;
 
 @Entity
-public class Picture {
+@Table(name = "usr_photo")
+public class UserPhoto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
     private Long id;
 
     private String fileName;
 
-    @ManyToOne
+    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Picture(){}
+    public UserPhoto(){}
 
-    public Picture(String fileName, User user) {
+    public UserPhoto(String fileName, User user) {
         this.fileName = fileName;
         this.user = user;
     }

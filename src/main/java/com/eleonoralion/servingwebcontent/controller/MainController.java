@@ -1,8 +1,8 @@
 package com.eleonoralion.servingwebcontent.controller;
 
-import com.eleonoralion.servingwebcontent.entity.MessageModel;
+import com.eleonoralion.servingwebcontent.entity.Message;
 import com.eleonoralion.servingwebcontent.entity.User;
-import com.eleonoralion.servingwebcontent.repository.MessageRepository;
+import com.eleonoralion.servingwebcontent.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -10,69 +10,69 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Controller
 public class MainController {
 
-    private final MessageRepository messageRepository;
-
-    private static final String MAIN_PATH = "/main";
+    private final MessageService messageService;
 
     @Autowired
-    public MainController(MessageRepository messageRepository) {
-        this.messageRepository = messageRepository;
+    public MainController(MessageService messageService) {
+        this.messageService = messageService;
     }
 
 
     @GetMapping("/")
-    public String hello() {
+    public String getHelloPage() {
+
+        // Стартовая страница сервиса
         return "hello";
     }
 
     @GetMapping("/login")
-    public String login(@AuthenticationPrincipal User user){
+    public String getLoginPage(@AuthenticationPrincipal User user){
+
+        // Если "пришедший" User не авторизован
         if(user == null)
             return "login";
         else
             return "redirect:/main";
     }
 
-    @GetMapping(MAIN_PATH)
-    public String main(@AuthenticationPrincipal User user,
-                       @RequestParam(name = "filter", required = false) String filter,
+
+    @GetMapping("/main")
+    public String getMainPage(@RequestParam(name = "filter", required = false) String filter,
                        Map<String, Object> model,
-                       MessageModel messageModel) {
+                       Message message) {
 
         if(filter == null || filter.isEmpty()) {
-            model.put("messagesList", messageRepository.findAllByOrderById());
+            model.put("messagesList", messageService.findAllByOrderById());
             model.put("filter", false);
         } else {
-            model.put("messagesList", messageRepository.findByTagContainingIgnoreCase(filter));
+            model.put("messagesList", messageService.findByTagContainingIgnoreCase(filter));
             model.put("filter", true);
         }
 
         model.put("filterValue", filter);
 
-        return MAIN_PATH;
+        return "/main";
     }
 
-    @PostMapping(MAIN_PATH)
+    @PostMapping("/main")
     public String addMessage(@AuthenticationPrincipal User user,
                              Map<String, Object> model,
-                             @Valid MessageModel messageModel,
+                             @Valid Message message,
                              BindingResult bindingResult){
 
         if(bindingResult.hasErrors()){
-            model.put("messagesList", messageRepository.findAll());
+            model.put("messagesList", messageService.findAllByOrderById());
             model.put("filter", false);
-            return MAIN_PATH;
+            return "/main";
         }
 
-        messageModel.setAuthor(user);
-        messageModel.setDateTime(LocalDateTime.now().withNano(0));
-        messageRepository.save(messageModel);
-        return "redirect:" + MAIN_PATH + "?add";
+        messageService.addMessage(message, user);
+
+        return "redirect:/main?add";
     }
 }

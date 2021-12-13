@@ -1,6 +1,6 @@
 package com.eleonoralion.servingwebcontent.controller;
 
-import com.eleonoralion.servingwebcontent.entity.RegistrationForm;
+import com.eleonoralion.servingwebcontent.form.RegistrationForm;
 import com.eleonoralion.servingwebcontent.entity.User;
 import com.eleonoralion.servingwebcontent.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import javax.validation.Valid;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 public class RegistrationController {
@@ -42,16 +41,20 @@ public class RegistrationController {
         }
 
         // Если пользователь есть
-        if(!userService.checkUserAndEmail(registrationForm.getUsername(), registrationForm.getEmail())){
-            model.put("message", "Пользователь с таким логином или email уже существует!");
+        if(!userService.checkByUsername(registrationForm.getUsername())){
+            model.put("message", "Пользователь с таким логином уже существует!");
+            return "registration";
+        }
+        if(!userService.checkByEmail(registrationForm.getEmail())){
+            model.put("message", "Пользователь с таким email уже существует!");
             return "registration";
         }
 
-        // Сохраняем пользователя, отправляем письмо
+        // Формируем User из формы
         User user = new User(registrationForm);
 
-        user.setActivationCode(UUID.randomUUID().toString());
-        userService.sendEmailMessage(user);
+        // Отправляем письмо и добавляем User в БД
+        userService.sendActivationCode(user);
         userService.addUser(user);
 
         // Если всё успешно

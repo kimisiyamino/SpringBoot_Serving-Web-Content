@@ -1,4 +1,4 @@
-package com.eleonoralion.servingwebcontent.entity;
+package com.eleonoralion.servingwebcontent.form;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
